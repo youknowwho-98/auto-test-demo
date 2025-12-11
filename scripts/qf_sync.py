@@ -8,7 +8,7 @@ from datetime import datetime
 import requests
 from junitparser import JUnitXml
 
-BASE_URL = "https://cloud.veriserve.co.jp/api/v2"
+BASE_URL = "https://aegis-staging.n2jk-apps.com/api/v2"
 
 
 def create_test_cycle(api_key, test_phase_id, test_suite_assignment_id, target_priorities):
