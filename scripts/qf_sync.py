@@ -27,18 +27,41 @@ def create_test_cycle(api_key, test_phase_id, test_suite_assignment_id, target_p
     today = datetime.utcnow().strftime("%Y-%m-%d")
     name = f"GitHub AutoTest {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
 
+    # Nếu bạn chỉ dùng 1 priority (ví dụ "A")
+    # có thể truyền qua env QF_TARGET_PRIORITIES="A"
+    priorities = [p.strip() for p in str(target_priorities).split(",") if p.strip()]
+
+    # body cơ bản
     data = {
         "test_cycle[name]": name,
         "test_cycle[start_on]": today,
         "test_cycle[end_on]": today,
-        "test_cycle[status]": "in_progress",
-        "test_cycle[target_priorities]": target_priorities,
+        # status là SỐ, ví dụ 1 = 未実施 (unexecuted)
+        "test_cycle[status]": 1,
+        # optional: gửi thêm assignment id, dù đã có trong path
+        "test_cycle[test_suite_assignment_id]": test_suite_assignment_id,
     }
 
-    resp = requests.post(url, params=params, headers=headers, data=data)
-    resp.raise_for_status()
+    # field bắt buộc: test_cycle[target_priorities][]
+    # chỉ cần 1 giá trị A → gửi 1 key thôi là đủ
+    # nếu sau này có nhiều priority, có thể gửi nhiều lần key này
+    if priorities:
+        # requests sẽ encode list(tuple) đúng dạng x-www-form-urlencoded
+        payload = list(data.items())
+        for p in priorities:
+            payload.append(("test_cycle[target_priorities][]", p))
+    else:
+        payload = list(data.items())
+
+    resp = requests.post(url, params=params, headers=headers, data=payload)
+
+    if not resp.ok:
+        print("[QF] Failed to create test cycle:", resp.status_code, resp.text)
+        resp.raise_for_status()
+
     body = resp.json()
     return body["id"]
+
 
 
 def parse_junit_results(junit_path):
