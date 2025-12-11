@@ -25,6 +25,7 @@ jobs:
 
       - name: Run pytest and generate JUnit XML
         run: |
+          export PYTHONPATH=.
           mkdir -p results
           pytest --junitxml=results/junit.xml
 
