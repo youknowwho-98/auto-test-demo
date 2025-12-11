@@ -9,11 +9,11 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
   env:
-  QF_API_KEY: ${{ secrets.QF_API_KEY }}
-  QF_TEST_PHASE_ID: ${{ secrets.QF_TEST_PHASE_ID }}
-  QF_TEST_SUITE_ASSIGNMENT_ID: ${{ secrets.QF_TEST_SUITE_ASSIGNMENT_ID }}
-  QF_USER_ID: ${{ secrets.QF_USER_ID }}
-  QF_TARGET_PRIORITIES: ${{ secrets.QF_TARGET_PRIORITIES }}
+    QF_API_KEY: ${{ secrets.QF_API_KEY }}
+    QF_TEST_PHASE_ID: ${{ secrets.QF_TEST_PHASE_ID }}
+    QF_TEST_SUITE_ASSIGNMENT_ID: ${{ secrets.QF_TEST_SUITE_ASSIGNMENT_ID }}
+    QF_USER_ID: ${{ secrets.QF_USER_ID }}
+    QF_TARGET_PRIORITIES: ${{ secrets.QF_TARGET_PRIORITIES }}
 
     steps:
       - name: Checkout code
