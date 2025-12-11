@@ -40,3 +40,6 @@ jobs:
         with:
           name: junit-report
           path: results/junit.xml
+      - name: Sync results to QualityForward
+        run: |
+          python scripts/qf_sync.py results/junit.xml
